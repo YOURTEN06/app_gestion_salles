@@ -1,9 +1,9 @@
 from Data.dao_salle import DataSalle
+from models.salle import Salle
 
 dao = DataSalle()
-connexion = dao.get_connection()
 
-if connexion.is_connected():
-    print("Connexion à MySQL réussie")
+salle1 = Salle("A101", "Salle informatique", "Laboratoire", 30)
+dao.insert_salle(salle1)
 
-connexion.close()
+print("Salle ajoutée avec succès")
