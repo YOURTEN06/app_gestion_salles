@@ -46,7 +46,7 @@ class ViewSalle(ctk.CTk):
         self.btn_ajouter = ctk.CTkButton(self.cadreAction, text="Ajouter", command=self.ajouter_salle)
         self.btn_ajouter.grid(row=0, column=0, padx=10, pady=10)
 
-        self.btn_modifier = ctk.CTkButton(self.cadreAction, text="Modifier")
+        self.btn_modifier = ctk.CTkButton(self.cadreAction, text="Modifier", command=self.modifier_salle)
         self.btn_modifier.grid(row=0, column=1, padx=10, pady=10)
 
         self.btn_supprimer = ctk.CTkButton(self.cadreAction, text="Supprimer")
@@ -67,6 +67,23 @@ class ViewSalle(ctk.CTk):
         succes, message = self.service_salle.ajouter_salle(salle)
 
         from tkinter import messagebox
+
+        if succes:
+            messagebox.showinfo("Succès", message)
+        else:
+            messagebox.showerror("Erreur", message)
+
+    def modifier_salle(self):
+        code = self.entry_code.get()
+        description = self.entry_description.get()
+        categorie = self.entry_categorie.get()
+        capacite = self.entry_capacite.get()
+
+        from models.salle import Salle
+        from tkinter import messagebox
+
+        salle = Salle(code, description, categorie, capacite)
+        succes, message = self.service_salle.modifier_salle(salle)
 
         if succes:
             messagebox.showinfo("Succès", message)
