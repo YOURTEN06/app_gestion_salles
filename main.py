@@ -3,7 +3,7 @@ from models.salle import Salle
 
 dao = DataSalle()
 
-salle1 = Salle("A101", "Salle informatique", "Laboratoire", 30)
-dao.insert_salle(salle1)
+salle1 = Salle("A101", "Salle réseau", "Laboratoire", 35)
+dao.update_salle(salle1)
 
-print("Salle ajoutée avec succès")
+print("Salle modifiée avec succès")
