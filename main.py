@@ -1,9 +1,9 @@
 from Data.dao_salle import DataSalle
-from models.salle import Salle
 
 dao = DataSalle()
+salle = dao.get_salle("A101")
 
-salle1 = Salle("A101", "Salle réseau", "Laboratoire", 35)
-dao.update_salle(salle1)
-
-print("Salle modifiée avec succès")
+if salle:
+    print(salle.afficher_infos())
+else:
+    print("Salle non trouvée")
