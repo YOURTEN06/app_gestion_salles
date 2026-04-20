@@ -1,9 +1,18 @@
 from services.services_salle import ServiceSalle
-from models.salle import Salle
 
 service = ServiceSalle()
 
-salle = Salle("F101", "Salle test modifiée", "Classe", 35)
-succes, message = service.modifier_salle(salle)
+print("Recherche d'une salle :")
+salle = service.rechercher_salle("F101")
+if salle:
+    print(salle.afficher_infos())
+else:
+    print("Salle non trouvée")
 
-print(message)
+print("\nListe des salles :")
+for s in service.recuperer_salles():
+    print(s.afficher_infos())
+
+print("\nSuppression de la salle F101")
+service.supprimer_salle("F101")
+print("Suppression réussie")
