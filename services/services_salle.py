@@ -12,7 +12,11 @@ class ServiceSalle:
         if int(salle.capacite) < 1:
             return False, "La capacité doit être supérieure ou égale à 1"
 
-        self.dao_salle.insert_salle(salle)
+        succes = self.dao_salle.insert_salle(salle)
+
+        if not succes:
+            return False, "Ce code existe déjà"
+
         return True, "Salle ajoutée avec succès"
 
     def modifier_salle(self, salle):

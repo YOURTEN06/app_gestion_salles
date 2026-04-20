@@ -17,17 +17,23 @@ class DataSalle:
         return connexion
 
     def insert_salle(self, salle):
-        connexion = self.get_connection()
-        curseur = connexion.cursor()
+        try:
+            connexion = self.get_connection()
+            curseur = connexion.cursor()
 
-        requete = "INSERT INTO salle (code, description, categorie, capacite) VALUES (%s, %s, %s, %s)"
-        valeurs = (salle.code, salle.description, salle.categorie, salle.capacite)
+            requete = "INSERT INTO salle (code, description, categorie, capacite) VALUES (%s, %s, %s, %s)"
+            valeurs = (salle.code, salle.description, salle.categorie, salle.capacite)
 
-        curseur.execute(requete, valeurs)
-        connexion.commit()
+            curseur.execute(requete, valeurs)
+            connexion.commit()
 
-        curseur.close()
-        connexion.close()
+            curseur.close()
+            connexion.close()
+
+            return True
+
+        except mysql.connector.IntegrityError:
+            return False
 
     def update_salle(self, salle):
         connexion = self.get_connection()
