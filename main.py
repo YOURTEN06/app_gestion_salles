@@ -1,4 +1,9 @@
-from models.salle import Salle
+from Data.dao_salle import DataSalle
 
-s = Salle("A101", "Salle informatique", "Laboratoire", 30)
-print(s.afficher_infos())
+dao = DataSalle()
+connexion = dao.get_connection()
+
+if connexion.is_connected():
+    print("Connexion à MySQL réussie")
+
+connexion.close()
