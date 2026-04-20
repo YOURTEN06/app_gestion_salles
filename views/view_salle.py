@@ -43,7 +43,7 @@ class ViewSalle(ctk.CTk):
         self.cadreAction = ctk.CTkFrame(self, corner_radius=10)
         self.cadreAction.pack(pady=10, padx=20, fill="x")
 
-        self.btn_ajouter = ctk.CTkButton(self.cadreAction, text="Ajouter")
+        self.btn_ajouter = ctk.CTkButton(self.cadreAction, text="Ajouter", command=self.ajouter_salle)
         self.btn_ajouter.grid(row=0, column=0, padx=10, pady=10)
 
         self.btn_modifier = ctk.CTkButton(self.cadreAction, text="Modifier")
@@ -54,3 +54,21 @@ class ViewSalle(ctk.CTk):
 
         self.btn_rechercher = ctk.CTkButton(self.cadreAction, text="Rechercher")
         self.btn_rechercher.grid(row=0, column=3, padx=10, pady=10)
+
+    def ajouter_salle(self):
+        code = self.entry_code.get()
+        description = self.entry_description.get()
+        categorie = self.entry_categorie.get()
+        capacite = self.entry_capacite.get()
+
+        from models.salle import Salle
+
+        salle = Salle(code, description, categorie, capacite)
+        succes, message = self.service_salle.ajouter_salle(salle)
+
+        from tkinter import messagebox
+
+        if succes:
+            messagebox.showinfo("Succès", message)
+        else:
+            messagebox.showerror("Erreur", message)
