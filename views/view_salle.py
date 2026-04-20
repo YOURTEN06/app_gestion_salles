@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from services.services_salle import ServiceSalle
+from tkinter import ttk
 
 
 class ViewSalle(ctk.CTk):
@@ -55,6 +56,32 @@ class ViewSalle(ctk.CTk):
         self.btn_rechercher = ctk.CTkButton(self.cadreAction, text="Rechercher", command=self.rechercher_salle)
         self.btn_rechercher.grid(row=0, column=3, padx=10, pady=10)
 
+        # Cadre Liste des salles
+        self.cadreList = ctk.CTkFrame(self, corner_radius=10)
+        self.cadreList.pack(pady=10, padx=20, fill="both", expand=True)
+
+        self.treeList = ttk.Treeview(
+            self.cadreList,
+            columns=("code", "description", "categorie", "capacite"),
+            show="headings"
+        )
+
+        # Titres colonnes
+        self.treeList.heading("code", text="CODE")
+        self.treeList.heading("description", text="Description")
+        self.treeList.heading("categorie", text="Catégorie")
+        self.treeList.heading("capacite", text="Capacité")
+
+        # Largeur
+        self.treeList.column("code", width=80)
+        self.treeList.column("description", width=200)
+        self.treeList.column("categorie", width=120)
+        self.treeList.column("capacite", width=100)
+
+        self.treeList.pack(fill="both", expand=True)
+
+        self.lister_salles()
+
     def ajouter_salle(self):
         code = self.entry_code.get()
         description = self.entry_description.get()
@@ -72,6 +99,7 @@ class ViewSalle(ctk.CTk):
             messagebox.showinfo("Succès", message)
         else:
             messagebox.showerror("Erreur", message)
+        self.lister_salles()
 
     def modifier_salle(self):
         code = self.entry_code.get()
@@ -90,6 +118,8 @@ class ViewSalle(ctk.CTk):
         else:
             messagebox.showerror("Erreur", message)
 
+        self.lister_salles()
+
     def supprimer_salle(self):
         code = self.entry_code.get()
 
@@ -97,6 +127,8 @@ class ViewSalle(ctk.CTk):
 
         self.service_salle.supprimer_salle(code)
         messagebox.showinfo("Succès", "Salle supprimée avec succès")
+
+        self.lister_salles()
 
     def rechercher_salle(self):
         code = self.entry_code.get()
@@ -116,3 +148,15 @@ class ViewSalle(ctk.CTk):
             self.entry_capacite.insert(0, salle.capacite)
         else:
             messagebox.showerror("Erreur", "Salle non trouvée")
+
+    def lister_salles(self):
+        self.treeList.delete(*self.treeList.get_children())
+
+        liste = self.service_salle.recuperer_salles()
+
+        for s in liste:
+            self.treeList.insert(
+                "",
+                "end",
+                values=(s.code, s.description, s.categorie, s.capacite)
+            )
